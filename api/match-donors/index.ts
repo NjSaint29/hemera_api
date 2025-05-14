@@ -1,8 +1,8 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { findNearestDonors } from '../utils/knn';
+import { findNearestDonors } from '../utils/knn.js';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-import { MatchDonorsRequest, MatchDonorsResponse } from '../utils/types';
+import { MatchDonorsRequest, MatchDonorsResponse, Donor } from '../utils/types.js';
 
 // Initialize Firebase Admin once
 if (!getApps().length) {
@@ -38,8 +38,13 @@ export default async function handler(
 
     const donors = donorsSnapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data() as Omit<any, 'id'>
-    }));
+      location: doc.data().location,
+      bloodType: doc.data().bloodType,
+      lastDonation: doc.data().lastDonation,
+      name: doc.data().name,
+      phoneNumber: doc.data().phoneNumber,
+      isAvailable: doc.data().isAvailable ?? true
+    })) as Donor[];
 
     // Find nearest matching donors
     const matchedDonors = findNearestDonors(
