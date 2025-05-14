@@ -1,0 +1,13 @@
+{
+  "name": "hemera-api",
+  "version": "1.0.0",
+  "description": "Hemera API for donor matching",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "@vercel/node": "^2.15.1"
+  }
+}
